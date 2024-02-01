@@ -41,7 +41,7 @@ public class Controller {
     }
 
     @PostMapping("rezervacija")
-    public ResponseEntity<?> createReservation(@RequestBody Reservation rezervacija){
+    public ResponseEntity<?> createReservation(@RequestBody ReservationDTO rezervacija){
         return ResponseEntity.ok(rezervacijaService.createReservation(rezervacija));
     }
 

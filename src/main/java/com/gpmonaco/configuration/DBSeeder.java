@@ -43,30 +43,30 @@ public class DBSeeder implements CommandLineRunner {
         }
     }
 
-    private void seedRezervacija(){
-        Reservation reservation = new Reservation();
-        List<DailyPlan> dp = dailyPlanRepository.findAll();
-        Customer c = customerRepository.findAll().get(0);
-        c.setReservations(new ArrayList<Reservation>());
-        reservation.setCustomer(c);
-        Ticket ticket = new Ticket();
-        ticket.setReservation(reservation);
-        ticket.setDailyPlan(dp.get(0));
-        Ticket ticket2 = new Ticket();
-        ticket2.setReservation(reservation);
-        ticket2.setDailyPlan(dp.get(6));
-        List<Ticket> tickets = new ArrayList<>();
-        tickets.add(ticket);
-        tickets.add(ticket2);
-        reservation.setTickets(tickets);
-
-    reservationService.createReservation(reservation);
-    }
+//    private void seedRezervacija(){
+//        Reservation reservation = new Reservation();
+//        List<DailyPlan> dp = dailyPlanRepository.findAll();
+//        Customer c = customerRepository.findAll().get(0);
+//        c.setReservations(new ArrayList<Reservation>());
+//        reservation.setCustomer(c);
+//        Ticket ticket = new Ticket();
+//        ticket.setReservation(reservation);
+//        ticket.setDailyPlan(dp.get(0));
+//        Ticket ticket2 = new Ticket();
+//        ticket2.setReservation(reservation);
+//        ticket2.setDailyPlan(dp.get(6));
+//        List<Ticket> tickets = new ArrayList<>();
+//        tickets.add(ticket);
+//        tickets.add(ticket2);
+//        reservation.setTickets(tickets);
+//
+//    reservationService.createReservation(reservation);
+//    }
 
 
     @Override
     public void run(String... args) throws Exception {
         //seedDnevniPlan();
-        seedRezervacija();
+        //seedRezervacija();
     }
 }

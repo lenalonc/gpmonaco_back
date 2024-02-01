@@ -25,7 +25,7 @@ public class ReservationServiceImpl implements ReservationService {
     JwtUtil jwtUtil;
 
     @Override
-    public Reservation createReservation(Reservation reservationDTO) {
+    public ReservationDTO createReservation(ReservationDTO reservationDTO) {
         Reservation reservation = mapper.map(reservationDTO, Reservation.class);
         List<Ticket> karte = reservation.getTickets();
         karte.forEach(karta -> karta.setReservation(reservation));
@@ -41,8 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         reservationRepository.save(reservation);
         ticketRepository.saveAll(karte);
-        return reservation;
-        //return mapper.map(reservationRepository.save(reservation), ReservationDTO.class);
+        return mapper.map(reservationRepository.save(reservation), ReservationDTO.class);
     }
 
     private void checkDiscount(Reservation rezervacija) {
