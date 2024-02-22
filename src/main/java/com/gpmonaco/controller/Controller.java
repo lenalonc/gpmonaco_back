@@ -5,15 +5,12 @@ import com.gpmonaco.dto.CustomerDTO;
 import com.gpmonaco.dto.ReservationDTO;
 import com.gpmonaco.dto.ReservationPriceDTO;
 import com.gpmonaco.entities.Reservation;
-import com.gpmonaco.entities.Ticket;
 import com.gpmonaco.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import util.PromoCodeUtil;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/")

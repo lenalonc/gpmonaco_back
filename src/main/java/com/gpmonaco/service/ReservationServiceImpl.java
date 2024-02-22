@@ -72,8 +72,11 @@ public class ReservationServiceImpl implements ReservationService {
         for (Ticket karta: karte
              ) {
             Optional<DailyPlan> plan = dailyPlanRepository.findById(karta.getDailyPlan().getId());
-            plan.get().reduceCapacity(karta.getQuantity());
+            if(plan.isPresent()){
+                plan.get().reduceCapacity(karta.getQuantity());
             dailyPlanRepository.save(plan.get());
+            }
+
         }
         return mapper.map(finalReservation, ReservationDTO.class);
     }
