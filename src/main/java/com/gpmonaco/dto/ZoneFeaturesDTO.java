@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class ZoneFeaturesDTO {
 
-    @JsonBackReference
-    private ZoneDTO zone;
+//    @JsonBackReference(value = "zone-features")
+//    private ZoneDTO zone;
 
     private String name;
 
     private int capacity;
 
-    private Long price;
+    private Double price;
 
     private boolean tv;
 

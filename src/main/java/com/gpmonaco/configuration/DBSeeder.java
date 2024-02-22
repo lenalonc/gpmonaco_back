@@ -59,14 +59,30 @@ public class DBSeeder implements CommandLineRunner {
 //        tickets.add(ticket);
 //        tickets.add(ticket2);
 //        reservation.setTickets(tickets);
-//
-//    reservationService.createReservation(reservation);
-//    }
+//        reservationService.createReservation(reservation);
+//  }
 
+    private void seedCustomer() {
+        Customer customer = Customer.builder()
+                .email("pls")
+                .firstname("pls")
+                .lastname("pls")
+                .address1("a")
+                .address2("a")
+                .company("a")
+                .country("s")
+                .place("zasto")
+                .postalCode(11000)
+                .build();
+
+        customerRepository.save(customer);
+    }
 
     @Override
     public void run(String... args) throws Exception {
+        //seedCustomer();
         //seedDnevniPlan();
         //seedRezervacija();
+        //reservationService.isAuthorizedToUpdateReservation("eyJhbGciOiJIUzUxMiJ9.eyJyZXNlcnZhdGlvbklkIjpudWxsLCJjdXN0b21lcklkIjp7ImlkIjoxLCJmaXJzdG5hbWUiOiJhIiwibGFzdG5hbWUiOiJiZWJlIiwiY29tcGFueSI6bnVsbCwiYWRkcmVzczEiOiJ1bGljYSIsImFkZHJlc3MyIjpudWxsLCJwb3N0YWxDb2RlIjowLCJwbGFjZSI6ImJnIiwiY291bnRyeSI6InNyYiIsImVtYWlsIjoibmFuYSIsInJlc2VydmF0aW9ucyI6W119LCJhY3RpdmUiOnRydWUsImV4cCI6MTcxNjU4ODAwMH0.NBTFPSBxPYytVp4Q6vtox3oTY2wMIGtdXeMyYdcLrTXyHItMc-YsIAj7KsU9CDgrDegGmTvyPmdDYGZJizzkHQ","nana");
     }
 }

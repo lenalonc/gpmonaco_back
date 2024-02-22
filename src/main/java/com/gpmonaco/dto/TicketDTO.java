@@ -12,10 +12,12 @@ public class TicketDTO {
 
     private Long id;
 
-    @JsonBackReference
+//    @JsonBackReference(value = "plan-ticket")
     private DailyPlanDTO dailyPlan;
 
-    @JsonBackReference
-    private ReservationDTO reservation;
+    private int quantity;
+
+//    @JsonBackReference(value = "reservation-ticket")
+//    private ReservationDTO reservation;
 
 }

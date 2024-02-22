@@ -25,10 +25,10 @@ public class Reservation {
     private Date date;
 
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Double price;
 
     @Column(name = "discount")
-    private Long discount;
+    private Double discount;
 
     @ManyToOne
     @JoinColumn(name = "customer", nullable = false)

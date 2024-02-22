@@ -1,11 +1,11 @@
 package com.gpmonaco.service;
 
-import com.gpmonaco.entities.Day;
+import com.gpmonaco.dto.DayDTO;
 
 import java.util.List;
 
 public interface DayService {
 
-    List<Day> getAllDays();
+    List<DayDTO> getAllDays();
 
 }

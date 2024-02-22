@@ -1,5 +1,6 @@
 package com.gpmonaco.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,22 +17,20 @@ public class ReservationDTO {
 
     private Long id;
 
-    @NotNull
     private Date date;
 
-    @NotNull
-    private Long price;
+    private Double price;
 
-    private Long discount;
+    private Double discount;
 
-    @JsonManagedReference
+//    @JsonManagedReference(value = "reservation-ticket")
     @NotNull
     private List<TicketDTO> tickets;
 
     private String token;
 
-    //JsonBackReference
-    //@NotNull
-   // private CustomerDTO customer;
+    @JsonBackReference(value = "customer-reservation")
+    @NotNull
+    private CustomerDTO customer;
 
 }

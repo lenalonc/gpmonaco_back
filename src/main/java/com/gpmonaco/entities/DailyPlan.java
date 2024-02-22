@@ -43,4 +43,12 @@ public class DailyPlan {
                 ", capacity=" + capacity +
                 '}';
     }
+
+    public void reduceCapacity(int q){
+        capacity -= q;
+    }
+
+    public void addCapacity(int q){
+        capacity += q;
+    }
 }

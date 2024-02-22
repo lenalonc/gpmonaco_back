@@ -27,4 +27,7 @@ public class Ticket {
     @JoinColumn(name = "reservation", nullable = false)
     private Reservation reservation;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
 }

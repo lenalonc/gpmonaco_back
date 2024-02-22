@@ -17,7 +17,7 @@ public class DayDTO {
 
     private Date date;
 
-//    @JsonManagedReference
-//    private DailyPlanDTO dailyPlan;
+//    @JsonBackReference(value = "day-plan")
+    //private DailyPlanDTO dailyPlan;
 
 }

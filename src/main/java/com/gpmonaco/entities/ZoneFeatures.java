@@ -29,7 +29,7 @@ public class ZoneFeatures {
     private int capacity;
 
     @Column(name = "price", nullable = false)
-    private Long price;
+    private Double price;
 
     @Column(name = "TV", nullable = false)
     private boolean tv;

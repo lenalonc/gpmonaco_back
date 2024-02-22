@@ -1,5 +1,7 @@
 package com.gpmonaco.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,7 @@ public class CustomerDTO {
 
     private Long id;
 
-    @NotBlank
+    //@NotBlank
     private String firstname;
 
     @NotBlank
@@ -29,7 +31,7 @@ public class CustomerDTO {
     private String address2;
 
     @NotNull
-    private int postal_code;
+    private int postalCode;
 
     @NotBlank
     private String place;
@@ -40,7 +42,7 @@ public class CustomerDTO {
     @NotBlank
     private String email;
 
-    //@JsonManagedReference
-    //private List<ReservationDTO> reservations;
+    @JsonManagedReference(value = "customer-reservation")
+    private List<ReservationDTO> reservations;
 
 }

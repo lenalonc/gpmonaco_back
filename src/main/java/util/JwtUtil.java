@@ -2,6 +2,7 @@ package util;
 
 
 import com.gpmonaco.entities.Reservation;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +23,8 @@ import java.util.Map;
         public String generateToken(Reservation reservation) {
 
             Map<String, Object> claims = new HashMap<>();
-            claims.put("reservationId", reservation.getId());
-            claims.put("customerId", reservation.getCustomer());
+            claims.put("reservationId", reservation.getCustomer().getId());
+            claims.put("active", true);
 
             Calendar expirationCalendar = Calendar.getInstance();
             expirationCalendar.set(2024, Calendar.MAY, 25, 0, 0, 0);
@@ -35,6 +36,20 @@ import java.util.Map;
                     .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                     .compact();
         }
+
+    public String makeTokenPassive(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        claims.put("active", false);
+        return Jwts.builder()
+                .setClaims(claims)
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
+    }
+
+    public boolean isTokenActive(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return claims.get("active", Boolean.class);
+    }
 
     }
 
