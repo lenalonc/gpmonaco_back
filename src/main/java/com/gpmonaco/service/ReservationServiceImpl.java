@@ -1,21 +1,17 @@
 package com.gpmonaco.service;
 
-import com.gpmonaco.dto.CustomerDTO;
-import com.gpmonaco.dto.ReservationDTO;
-import com.gpmonaco.dto.ReservationPriceDTO;
-import com.gpmonaco.dto.TicketDTO;
+import com.gpmonaco.dto.*;
 import com.gpmonaco.entities.*;
+import com.gpmonaco.exceptions.BadRequestException;
 import com.gpmonaco.exceptions.ForbiddenException;
 import com.gpmonaco.exceptions.NotFoundException;
-import com.gpmonaco.repository.CustomerRepository;
-import com.gpmonaco.repository.DailyPlanRepository;
-import com.gpmonaco.repository.TicketRepository;
-import com.gpmonaco.repository.ReservationRepository;
+import com.gpmonaco.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import util.JwtUtil;
+import util.PromoCodeUtil;
 
 import java.util.*;
 
@@ -32,16 +28,25 @@ public class ReservationServiceImpl implements ReservationService {
     DailyPlanRepository dailyPlanRepository;
 
     @Autowired
+    PromoCodeRepository promoCodeRepository;
+
+    @Autowired
     ModelMapper mapper;
     @Autowired
     JwtUtil jwtUtil;
+
+    @Override
+    public List<ReservationDTO> getReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        return reservations.stream().map(r -> mapper.map(r, ReservationDTO.class)).toList();
+    }
 
     @Transactional
     @Override
     public ReservationDTO createReservation(ReservationDTO reservationDTO) {
         Reservation reservation = mapper.map(reservationDTO, Reservation.class);
         Customer customer = customerRepository.save(reservation.getCustomer());
-//        Optional<Customer> customer = customerRepository.findById(reservation.getCustomer().getId());
+
         reservation.setCustomer(customer);
         List<Ticket> karte = reservation.getTickets();
         validateTickets(karte);
@@ -49,10 +54,18 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setPrice(getSumPrice(karte));
         String token = jwtUtil.generateToken(reservation);
         reservation.setToken(token);
+
+
+
         checkDiscount(reservation);
         if(reservation.getDiscount() != 0){
             reservation.setPrice(reservation.getPrice() * (100 - reservation.getDiscount())/100);
         }
+
+        PromoCode promoCode = PromoCode.builder().code(PromoCodeUtil.generateUniquePromoCode(customer.getEmail(), 8)).active(true).build();
+        promoCode = promoCodeRepository.save(promoCode);
+        reservation.setPromoCode(promoCode);
+
         Reservation finalReservation = reservationRepository.save(reservation);
         karte.forEach(karta -> karta.setReservation(finalReservation));
         ticketRepository.saveAll(karte);
@@ -153,14 +166,22 @@ public class ReservationServiceImpl implements ReservationService {
 
             double price = getSumPrice(newTickets);
             reservation.setPrice(price);
+
             checkDiscount(reservation);
             if (reservation.getDiscount() != 0) {
                 reservation.setPrice(reservation.getPrice() * (100 - reservation.getDiscount()) / 100);
             }
 
+            reservation.setPromoCode(orgReservation.getPromoCode());
+
+            if(reservation.getPromoCode() != null){
+                reservation.setDiscount(reservation.getDiscount() + 5);
+            }
+
             reservation.setCustomer(orgReservation.getCustomer());
             reservation.setToken(orgReservation.getToken());
             reservation.setDate(orgReservation.getDate());
+
             Reservation finalReservation = reservationRepository.save(reservation);
 
             return mapper.map(finalReservation, ReservationDTO.class);
@@ -188,6 +209,18 @@ public class ReservationServiceImpl implements ReservationService {
         rezervacija.setDiscount(0.0);
         if(rezervacija.getDate().before(date)){
             rezervacija.setDiscount(rezervacija.getDiscount() + 10);
+        }
+
+        if(rezervacija.getPromoCode()!=null && rezervacija.getPromoCode().getCode() != ""){
+           Optional<PromoCode> promo = promoCodeRepository.findByCode(rezervacija.getPromoCode().getCode());
+           if(promo == null){
+               throw new BadRequestException("Promo code doesn't exist");
+           }
+           if(promo.get().isActive()) {
+               rezervacija.setDiscount(rezervacija.getDiscount() + 5);
+               promo.get().setActive(false);
+               promoCodeRepository.save(promo.get());
+           }
         }
 
         List<Day>days = new ArrayList<>();

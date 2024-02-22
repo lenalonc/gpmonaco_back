@@ -33,4 +33,6 @@ public class ReservationDTO {
     @NotNull
     private CustomerDTO customer;
 
+    private PromoCodeDTO promoCode;
+
 }

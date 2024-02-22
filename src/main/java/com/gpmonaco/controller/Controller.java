@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import util.PromoCodeUtil;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Controller {
 
     @GetMapping("hello")
     public ResponseEntity<String> hello(){
-        return new ResponseEntity<>("jel radiiis", HttpStatus.OK);
+        return new ResponseEntity<>(PromoCodeUtil.generateUniquePromoCode("mejl", 8), HttpStatus.OK);
     }
 
     @GetMapping("days")
@@ -43,6 +44,11 @@ public class Controller {
     @PostMapping("customer")
     public  ResponseEntity<?> createCustomer(@RequestBody CustomerDTO kupac){
         return ResponseEntity.ok(customerService.createCustomer(kupac));
+    }
+
+    @GetMapping("reservation")
+    public ResponseEntity<?> getReservations(){
+        return ResponseEntity.ok(reservationService.getReservations());
     }
 
     @PostMapping("reservation")

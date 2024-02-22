@@ -40,4 +40,8 @@ public class Reservation {
     @Column(name = "token", nullable = false)
     private String token;
 
+    @OneToOne
+    @JoinColumn(name = "promoCode")
+    private PromoCode promoCode;
+
 }
