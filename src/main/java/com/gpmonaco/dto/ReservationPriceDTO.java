@@ -21,4 +21,6 @@ public class ReservationPriceDTO {
         @NotNull
         private List<TicketDTO> tickets;
 
+        private PromoCodeDTO promoCode;
+
 }

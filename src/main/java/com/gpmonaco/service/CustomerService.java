@@ -5,4 +5,6 @@ import com.gpmonaco.dto.CustomerDTO;
 public interface CustomerService {
     CustomerDTO createCustomer(CustomerDTO customerDTO);
 
+    boolean uniqueUsername(CustomerDTO customerDTO);
+
 }
